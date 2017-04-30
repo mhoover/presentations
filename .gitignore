@@ -1,0 +1,10 @@
+# tex components
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+
+# prep files for data
+data_prep*
