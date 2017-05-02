@@ -124,6 +124,7 @@ beermat
 # network statistics
 gden(beernet)
 degree(beernet, gmode = 'graph')
+centralization(beernet, degree, mode = 'graph')
 
 # visualize the network
 beer_coords = coord_place(beernet)
