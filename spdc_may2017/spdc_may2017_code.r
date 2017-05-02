@@ -134,5 +134,5 @@ dev.off()
 
 pdf('beer_network_strength.pdf')
     ggnet(beernet, names = 'vertex.names', coords = beer_coords,
-          edge.val = beernet %e% 'tie.strength')
+          edge.val = 'tie.strength')
 dev.off()

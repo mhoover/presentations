@@ -60,9 +60,7 @@ client = Untappd(KEY, SECRET)
 seed_beers, seed_friends = get_info_for_network(client, ['hooverm2'], friends = True)
 
 # load friends beers
-friends_beers1 = get_info_for_network(client, [x[0] for x in seed_friends[0]][:4])
-friends_beers2 = get_info_for_network(client, [x[0] for x in seed_friends[0]][4:])
-friends_beers = friends_beers1 + friends_beers2
+friends_beers = get_info_for_network(client, [x[0] for x in seed_friends[0]])
 
 # build an edgelist
 tot_beers = [len(x) for x in friends_beers]
