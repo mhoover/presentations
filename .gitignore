@@ -4,7 +4,11 @@
 *.nav
 *.out
 *.snm
+*.tex
 *.toc
 
 # prep files for data
 data_prep*
+
+# output graphics
+*_FINAL.pdf

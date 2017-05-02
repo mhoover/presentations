@@ -4,6 +4,7 @@
 
 \usepackage{color,colortbl}
 \usepackage{setspace}
+\usepackage{bbm}
 
 \definecolor{maroonish}{RGB}{194, 27, 27}
 \definecolor{lightgray}{gray}{0.85}
@@ -14,6 +15,7 @@
 
 \setbeamercolor{item projected}{bg=darkred}
 \setbeamercolor{itemize subitem}{fg=darkred}
+\setbeamercolor{caption name}{fg=darkred}
 \setbeamertemplate{itemize subitem}[triangle]
 
 \title[Social Networks]{Social Networks: A Fast Tour From People to Groups!}
@@ -22,9 +24,28 @@
 
 \begin{document}
 \frame{\titlepage}
-% 1. Introduction (1. Background, 2. Outline talk)
-% 2. Individuals (1. Basic unit of analysis for econometrics or ML, 2. Miss relational information, 3. What that provides)
-% 3. What is a network (1. Network creation, 2. Snapshot in time, 3. Varies based on tie (a. Face-to-face network, b. Online network), 4. One- and two-mode, 5. Complete versus personal, 6. Introduce: (a. Node, b. Edge))
+% 0. Personal introduction
+%     * Who I am
+%     * What I've done
+% 1. Introduction
+%     * Background
+%     * Outline talk
+% 2. Individuals
+%     * Basic unit of analysis for econometrics or ML
+%     * Miss relational information
+%     * What that provides
+%     * Introduce:
+%         * Node
+% 3. What is a network
+%     * Network creation
+%     * Snapshot in time
+%     * Varies based on tie
+%         * Face-to-face network
+%         * Online network
+%     * One- and two-mode
+%     * Complete versus personal
+%     * Introduce:
+%         * Edge
 % 4. Basic network
 %     * Dyad
 %     * Introduce:
@@ -73,7 +94,7 @@
 %         * Badges
 %         * Use of language
 
-% 1
+% 0
 \frame {
 	\frametitle{Welcome!}
 	\begin{itemize}
@@ -87,7 +108,7 @@
 	\end{itemize}
 }
 
-% 2
+% 1a
 \frame {
 	\frametitle{What is social network analysis?}
 	\begin{itemize}
@@ -99,257 +120,432 @@
 	\end{itemize}
 }
 
-% 3
+% 1b
+\frame {
+    \frametitle{What we'll cover today}
+    \begin{itemize}
+        \item<1-> Build up the conception of a network from an individual
+        \item<1-> Introduce network measures: degree, centrality, triangles, and isolates
+        \item<1-> Discuss analyses: community structure, block modeling, ERGMs, SAOMs
+        \item<1-> Visualize networks and how/why that's important
+        \item<1-> DIY: Building a network
+        \item<2-> \textbf{The point-of-view for this talk are human networks, so the scale is considerably smaller -- and more tractable -- than large computer or web networks, like Facebook or Twitter}
+    \end{itemize}
+}
+
+% 2
 \frame {
     \frametitle{Let's start small: The individual}
     \begin{itemize}
         \item<1-> The individual plays the key role in most econometric analyses
+        \item<1-> However, misses relational information between people
+        \begin{itemize}
+            \item<1-> Relations can guide actions or behaviors (\textit{influence})
+            \item<1-> Actions can determine relations (\textit{selection})
+        \end{itemize}
+        \item<1-> In networks, an individual is called a \textbf{node}
+        \begin{itemize}
+            \item<1-> Terminology borrowed from graph theory, as another representation of a network is a graph
+            \item<1-> Each node can have a series of attributes: age, gender, beliefs, career
+            \item<1-> Note, networks do not have to be of people only
+        \end{itemize}
     \end{itemize}
 }
 
-% 3
+% 3a
 \frame {
-	\frametitle{Types of analysis (thank goodness for computers!)}
+	\frametitle{A simple question: What is a network?}
 	\begin{itemize}
-		\item<1-> Early network analysis (circa 1920s) was done by hand on small networks (10-12 people)
-		\item<1-> With computers, our reach is greatly expanded:
-		\begin{itemize}
-			\item<1-> Descriptive statistics
-			\item<1-> Dyadic models
-			\item<1-> Exponential random graph models
-			\item<1-> Stochastic actor oriented models
-		\end{itemize}
-		\item<1-> Underneath it all though, visualization of networks has been an important analysis tool since the beginning
+		\item<1-> `I know it when I see it': Simply put, it's a collection of entities (nodes) connected in some way (edges)
+        \item<1-> That collection of entities -- depending on how they are connected -- do or do not make a network\ldots moreover, depending on the connection type, it forms different networks
+        \item<2-> The size of a network can differ dramatically; for example\ldots
+        \begin{itemize}
+            \item<2-> Friendship ties of high schoolers \textit{in real life}
+            \item<2-> Friendship ties of high schoolers \textit{on Instagram}
+        \end{itemize}
+        \item<3-> The type of network can differ too\ldots
+        \begin{itemize}
+            \item<3-> A \textit{one-mode} network is of a single entity type, e.g., dogs connected to other dogs through breeding
+            \item<3-> A \textit{two-mode} network is of two separate entities, e.g., people connected to beers they drank
+            \item<3-> A two-mode network can be `flattened` to create a person-to-person or beer-to-beer network
+        \end{itemize}
 	\end{itemize}
+}
+
+% 3b
+\frame {
+    \frametitle{A simple question: What is a network?}
+    \begin{itemize}
+        \item<1-> The type of network can differ too\ldots
+        \begin{itemize}
+            \item<1-> A \textit{one-mode} network is of a single entity type, e.g., people connected in some way to other people
+            \item<1-> A \textit{two-mode} network is of two separate entities, e.g., people connected to beers they drank
+            \item<1-> A two-mode network can be `flattened` to create a person-to-person or beer-to-beer network
+        \end{itemize}
+        \item<2-> Finally, the scope of the network can differ
+        \begin{itemize}
+            \item<2-> A \textit{complete} network looks at the whole network, e.g., doctors' referrals to other doctors in a hospital
+            \item<2-> A \textit{personal} or \textit{ego-centric} network focuses on the constellation of nodes around an entity in particular, e.g., whom jazz musicians have sessioned with in the past
+            \item<2-> Both networks have their advantages and disadvantages
+        \end{itemize}
+    \end{itemize}
 }
 
 % 4a
 \frame {
-	\frametitle{Visualization -- the problem}
+	\frametitle{The seeds of a network: Dyads and triads}
 	\begin{itemize}
-		\item<1-> The problem with network visualization is quite simple: there are programs that do good visualization (\texttt{Gephi}, \texttt{Visone}) and there are programs that do good statistical work (\texttt{R}), but there were really none that did both (\texttt{Python} is starting to change this)
-		\item<1-> This posed a problem to me, as I had 62 networks I needed to visualize for my dissertation and I didn't want to use a lot of different programs to accomplish my tasks (data management, analysis, visualization)
-		\item<1-> Since each network can be thought of as a square matrix of 1's and 0's, I opted to figure out a solution inside \texttt{R} or with a program that \texttt{R} could plug into
-		\item<1-> \texttt{Visone} had an \texttt{R} plug-in, but due to changes in \texttt{R} with release 3.0, that no longer worked
-		\item<1-> I was stuck with visualizations in \texttt{R}, which left me with this:
-	\end{itemize}
+		\item<1-> The start of a network is the connection of two nodes through a edge: A \textit{dyad}
+		\item<1-> This already adds complexity -- is the network \textit{undirected} or \textit{directed}?
+        \begin{itemize}
+            \item<2-> An undirected network means there is no directionality in the tie -- the tie is the same for both nodes, e.g., two servers that are connected to one another
+            \item<2-> A directed network means ties have a sender and a receiver and the connection flows one-way only, e.g., followers on Twitter
+            \item<2-> Of course, in a directed network and edge can be bi-directional, which is generally seen as a `stronger` tie than a uni-directional connection
+        \end{itemize}
+        \item<3-> A core building block in networks are \textit{triads} or the grouping of three nodes together in some way.
+    \end{itemize}
 }
 
 % 4b
 \frame {
-	\frametitle{Visualization -- the problem}
-	\begin{figure}
-		\begin{center}
-		\includegraphics[height=.8\textwidth]{/Users/mhoover/Dropbox/pubs_presents/output/gplot_v01}
-		\label{gplot1}
-		\end{center}
-	\end{figure}
+    \frametitle{The seeds of a network: Dyads and triads}
+    \begin{itemize}
+        \item<1-> A triad, even though only three nodes, is already an interesting structure. It can exhibit hierarchy, closeness, or little relation between nodes
+        \item<1-> With many nodes in a network, one technique to use is a \textit{triad count}, which countes the number of triads for the various possible formations
+        \item<1-> Triads, depending on how they are formed and interconnect, help to determine the more advanced structure of a network, including cliques and sub-graphs
+        \item<2-> An outgrowth of triads are \textit{isolates}, which are nodes in a network that are not connected to any other node
+        \item<2-> Isolates often exhibit unique behavior or have attributes that differ from others within the network
+        \item<2-> A network itself can be composed of many isolates, which is also interesting -- depending on the purpose of the network, this could be expected or potentially problematic
+    \end{itemize}
 }
 
-% 5
+% 5a
 \frame {
-	\frametitle{(The start of) a solution}
+	\frametitle{The total network}
 	\begin{itemize}
-		\item<1-> I was unhappy with a number of things:
-		\begin{itemize}
-			\item<1-> The color palette was jarring
-			\item<1-> The resolution and plotting area was quite limited
-			\item<1-> Controlling attributes (size\slash color of nodes) was difficult
-			\item<1-> Most importantly, I could not ``set'' node coordinates to replicate a different network with the same actors
-		\end{itemize}
-		\item<1-> As I thought about solutions, I was using the \texttt{ggplot2} package in other work, so I thought I would try and create a \texttt{ggplot2}-like visualization for networks
-		\item<1-> Let's look a bit more at the native and my \texttt{ggplot2}-inspired visualization
+		\item<1-> From triads, the network builds into more complex structures that can be broken down to isolates, dyads, and triads, but is much, much more
+        \item<1-> At this point, network measures and statistics become important
+        \item<1-> The most basic is \textit{density}, a measure on the network itself -- of all possible connections, how many are present?
+        \item<1-> At the node level, there are measures of \textit{centrality}:
+        \begin{itemize}
+            \item<1-> \textit{Degree} (\textit{in-degree} and \textit{out-degree} for directed networks): The number of ties for each node in a network; in-degree\slash out-degree centrality can be called popularity and activity, respectively
+            \item<1-> \textit{Betweenness}: A measure of position of a person -- do they sit `between' others or not; nodes will high betweenness centrality are `bridges' to other parts of the network
+            \item<1-> \textit{Eigenvector}: Measures the connections' connections, that is, nodes have higher values if their connections are well-connected and those connections are well-connected and so on
+        \end{itemize}
+		\item<1-> Let's take a minute or two to look at a network and then take a look at some of these network summary measures
 	\end{itemize}
+}
+
+% 5b
+\frame {
+    \frametitle{A directed network}
+    \begin{figure}
+    \begin{center}
+        \includegraphics[height=.65\textwidth]{/Users/mhoover/Dropbox/git/presentations/spdc_may2017/network_FINAL}
+        \label{network}
+        \end{center}
+    \end{figure}
+}
+
+% 5c
+\frame {
+    \frametitle{Network summary statistics}
+    \begin{table}[ht]
+        \centering
+        \caption{Directed Network Summary}
+        \begin{tabular}{lc}
+            \hline
+            Measure & Value \\
+            \hline
+            Number of Nodes & 48 \\
+            Number of Edges & 48 \\
+            Number of Isolates & 4  \\
+            Network Density & 0.021 \\
+            Degree Centralization & 0.044 \\
+            \hline
+        \end{tabular}
+        \label{vill.demos}
+    \end{table}
+    \begin{itemize}
+        \item<1-> Think about the following as we look at the graph again:
+        \begin{itemize}
+            \item<1-> Which nodes have high degree centrality?
+            \item<1-> What about betweenness centrality? Why?
+            \item<1-> Thoughts on high eigenvector centrality?
+        \end{itemize}
+    \end{itemize}
+}
+
+% 5d
+\frame {
+    \frametitle{A directed network}
+    \begin{figure}
+    \begin{center}
+        \includegraphics[height=.65\textwidth]{/Users/mhoover/Dropbox/git/presentations/spdc_may2017/network_lab_FINAL}
+        \label{network_lab}
+        \end{center}
+    \end{figure}
+}
+
+% 5e
+\frame {
+    \frametitle{Relating network information back to the individual}
+    \begin{itemize}
+        \item<1-> Let's pause for a second: So these measures may be \textit{interesting}, but what can be done with them beyond descriptive statistics?
+        \item<1-> There needs to be a way to relate network summaries -- and the statistics we will discuss next -- to the individual
+        \item<1-> There are two choices in particular:
+        \begin{itemize}
+            \item<2-> The first is using node-level summaries as individual-level measures
+            \item<2-> These measures can be used as covariates in modeling efforts (remember to normalize!)
+            \item<3-> Second, if there are individuals from multiple networks, then think about a hierarchical model, if the outcome is amenable
+            \item<3-> Works well for analyses utilizing personal networks or similar complete networks measured at the same time
+        \end{itemize}
+        \item<4-> \textbf{Network analysis has suffered because people often can't figure out what to do with them in practice}
+    \end{itemize}
 }
 
 % 6a
 \frame {
-	\frametitle{Native \texttt{R} plotting: \texttt{gplot}}
-	\begin{itemize}
-		\item<1-> Uses \texttt{R}'s base graphing features, layout, and language
-		\item<1-> Limited color palette (8 colors), then it will recycle through colors
-		\item<1-> Adding legends is difficult
-		\item<1-> No way to capture\slash fix node coordinates
-		\item<1-> However, very flexible in the format data can be fed to the function
-		\item<1-> Let's look at it within \texttt{R}
-	\end{itemize}
+    \frametitle{Moving from descriptives: Identifying structure in a network}
+    \begin{itemize}
+        \item<1-> Beyond network descriptive statistics and visualizations, we can use algorithms to determine underlying structure in networks
+        \item<1-> The value of structure is it helps to sub-divide a network into smaller, (more) cohesive groups
+        \item<2-> Some examples of community structure:
+        \begin{itemize}
+            \item<2-> Clients and personal relationships in commercial sex workers' lives
+            \item<2-> Grade levels within a high school
+            \item<2-> Political affiliation within Twitter
+        \end{itemize}
+        \item<3-> Of course, the algorithms only do the math -- the analyst needs to understand what the results mean
+    \end{itemize}
 }
 
 % 6b
 \frame {
-	\frametitle{\texttt{gplot}: Basic plot}
-	\begin{figure}
-	\begin{center}
-		\includegraphics[height=.8\textwidth]{/Users/mhoover/Dropbox/pubs_presents/output/gplot_basic}
-		\label{gplot2}
-		\end{center}
-	\end{figure}
+    \frametitle{Community detection algorithms}
+    \begin{itemize}
+        \item<1-> Many variations; one of the more well-known algorithms is Girvan-Newman, which is a hierarchical method for detecting community structure
+        \begin{enumerate}
+            \item<1-> Calculate betweenness
+            \item<1-> Remove edge with highest betweenness
+            \item<1-> Repeat 1 and 2 until no edges are left
+        \end{enumerate}
+        \item<1-> Other algorithms exist, utilizing different rules for structuring
+        \item<1-> Some will only work with undirected networks
+        \item<1-> A community detection algorithm is not \textit{the answer} it is \textit{an answer} to help better understand what's happening in a network.
+    \end{itemize}
 }
 
 % 6c
-\frame {
-	\frametitle{\texttt{gplot}: Colored nodes}
-	\begin{figure}
-	\begin{center}
-		\includegraphics[height=.8\textwidth]{/Users/mhoover/Dropbox/pubs_presents/output/gplot_color}
-		\label{gplot3}
-		\end{center}
-	\end{figure}
-}
-
-% 6d
-\frame {
-	\frametitle{\texttt{gplot}: Colored and shaped nodes}
-	\begin{figure}
-	\begin{center}
-		\includegraphics[height=.8\textwidth]{/Users/mhoover/Dropbox/pubs_presents/output/gplot_color_shape}
-		\label{gplot4}
-		\end{center}
-	\end{figure}
-}
-
-% 6e
-\frame {
-	\frametitle{\texttt{gplot}: With legend}
-	\begin{figure}
-	\begin{center}
-		\includegraphics[height=.8\textwidth]{/Users/mhoover/Dropbox/pubs_presents/output/gplot_legend}
-		\label{gplot5}
-		\end{center}
-	\end{figure}
+\frame{
+    \frametitle{Girvan-Newman on our simple network}
+    \begin{figure}[t]
+    \begin{center}
+        \includegraphics[width=.5\textwidth]{/Users/mhoover/Dropbox/git/presentations/spdc_may2017/network_lab_gn_FINAL}
+        \includegraphics[width=.5\textwidth]{/Users/mhoover/Dropbox/git/presentations/spdc_may2017/gn_dendrogram_FINAL}
+        \label{gn_structure}
+    \end{center}
+    \end{figure}
 }
 
 % 7a
 \frame {
-	\frametitle{Plotting with \texttt{ggplot2}: \texttt{ggnet}}
-	\begin{itemize}
-		\item<1-> Utilizes \texttt{ggplot2} for setup and graphing
-		\item<1-> Code builds on component pieces of \texttt{ggplot2}, such as lines, points, axes, and legends
-		\item<1-> Can specify coordinates for nodes or use random layout
-		\item<1-> Legends auto-generated
-		\item<1-> Variety of color palettes and objects types can be used for attributes
-		\item<1-> Requires a specific data object class (\texttt{network} class)
-		\item<1-> Let's have a look within \texttt{R}
-	\end{itemize}
+    \frametitle{Modeling networks, not individuals}
+    \begin{itemize}
+        \item<1-> Up to now, we've discussed operations that help identify network features for \textit{individual} analyses
+        \item<1-> There are \textit{network-based} analyses that are possible now, with the advent of greater computing power
+        \item<1-> Exponential random graph models (ERGMs)
+        \begin{itemize}
+            \item<1-> Cross-sectional
+            \item<1-> Identifies structural and compositional elements of a network
+            \begin{enumerate}
+                \item<1-> Start with network representation
+                \item<1-> Use MCMC to remove\slash add random edges
+                \item<1-> Take `snapshot' of network
+                \item<1-> Start with network representation; repeat
+                \item<1-> Calculate how likely\slash unlikely given structural\slash compositional characteristics are in network representation, given all other network possibilities
+            \end{enumerate}
+        \end{itemize}
+    \end{itemize}
 }
 
 % 7b
 \frame {
-	\frametitle{\texttt{ggnet}: Basic plot}
-	\begin{figure}
-	\begin{center}
-		\includegraphics[height=.7\textwidth]{/Users/mhoover/Dropbox/pubs_presents/output/ggnet_basic}
-		\label{ggnet1}
-		\end{center}
-	\end{figure}
+    \frametitle{ERGM terms}
+    \begin{table}[tbp]
+    \begin{center}
+    \tiny
+    \begin{tabular}{>{\centering\arraybackslash}m{.75in} >{\centering\arraybackslash}m{.75in} >{\centering\arraybackslash}m{1.25in} >{\arraybackslash}m{1.25in}}
+    \hline
+    \textbf{Statistic} & \textbf{Visualization} & \textbf{Formula} & \textbf{Description} \\
+    \hline
+    \textsc{edges} & \includegraphics{edges_FINAL} & \[\sum_{i, j} y_{ij}\] & Sum of all ties in network \\
+    \textsc{mutual} & \includegraphics{mutual_FINAL} & \[\sum_{i < j} y_{ij} y_{ji}\] & Sum of all reciprocated ties in network \\
+    \textsc{twopath} & \includegraphics{twopath_FINAL} & \[\sum_{i \neq j \neq k} y_{ij} y_{jk}\] & Sum of all paths containing exactly one in-degree and one out-degree \\
+    \textsc{gwidegree} & \includegraphics{gwidegree_FINAL} & \[\sum_{i=0}^n e^{-\alpha y_{+i}}\] & Indegree distribution, accounting for decrease in marginal utility of each additional nomination received \\
+    \hline
+    \end{tabular}
+    \label{ergm.struc}
+    \end{center}
+    \end{table}
 }
 
 % 7c
 \frame {
-	\frametitle{\texttt{ggnet}: Colored nodes}
-	\begin{figure}
-	\begin{center}
-		\includegraphics[height=.7\textwidth]{/Users/mhoover/Dropbox/pubs_presents/output/ggnet_color}
-		\label{ggnet2}
-		\end{center}
-	\end{figure}
+    \frametitle{ERGM terms}
+    \begin{table}[tbp]
+    \begin{center}
+    \tiny
+    \begin{tabular}{>{\centering\arraybackslash}m{.75in} >{\centering\arraybackslash}m{.75in} >{\centering\arraybackslash}m{1.25in} >{\arraybackslash}m{1.25in}}
+    \hline
+    \textbf{Statistic} & \textbf{Visualization} & \textbf{Formula} & \textbf{Description} \\
+    \hline
+    \textsc{gwodegree} & \includegraphics{gwodegree_FINAL} & \[\sum_{i=0}^n e^{-\alpha y_{i+}}\] & Outdegree distribution, accounting for decrease in marginal utility of each additional nomination sent \\
+    \textsc{gwesp} & \includegraphics{gwesp_FINAL} &
+    \tiny{\begin{multline*}
+        e^{\theta_t} \sum_{i=1}^{n-1} \left\{ 1 - \left( 1 - e^{-\theta_t} \right)^i \right\} \\
+        \sum_{i \neq j \neq k} y_{ij} y_{jk} y_{ik}
+    \end{multline*}} & Transitive triplet distribution, accounting for decrease in marginal probability of closing triplet \\
+    \textsc{ctriple} & \includegraphics{ctriple_FINAL} & \[\sum_{\substack{i \neq j \neq k \\ i < j, k}} y_{ij} y_{jk} y_{ki}\] & Sum of all cyclic triples in network \\
+    \textsc{match} & \includegraphics{match_FINAL} & \[\sum_{i, j} y_{ij} \mathbbm{1} \{D_i = D_j\}\] & Sum of dyads matched on specified attribute \\
+    \hline
+    \end{tabular}
+    \label{ergm.struc}
+    \end{center}
+    \end{table}
 }
-
 % 7d
 \frame {
-	\frametitle{\texttt{ggnet}: Colored and shaped nodes}
-	\begin{figure}
-	\begin{center}
-		\includegraphics[height=.7\textwidth]{/Users/mhoover/Dropbox/pubs_presents/output/ggnet_color_shape}
-		\label{ggnet3}
-		\end{center}
-	\end{figure}
+    \frametitle{ERGM estimates on our simple network}
+    \begin{table}[ht]
+    \centering
+    \caption{Simple network ERGM parameters}
+    \begin{tabular}{lccc}
+    \hline
+    Parameter & Estimate & Std. Error & $p$-value \\
+    \hline
+    edges & -15.73 & 3.928 & <0.001 \\
+    mutual & 2.465 & 0.597 & <0.0011 \\
+    twopath & -0.385 & 0.214 & 0.072 \\
+    gwidegree & -2.790 & 1.136 & 0.014 \\
+    gwodegree & 12.864 & 3.912 & 0.001 \\
+    gwesp & 0.927 & 0.528 & 0.079 \\
+    ctriple & 0.686 & 1.455 & 0.637 \\
+    gender (match) & 3.437 & 1.011 & 0.001 \\
+    \hline
+    \end{tabular}
+    \label{ergm}
+    \end{table}
 }
 
 % 7e
 \frame {
-	\frametitle{\texttt{ggnet}: With legend}
-	\begin{figure}
-	\begin{center}
-		\includegraphics[height=.7\textwidth]{/Users/mhoover/Dropbox/pubs_presents/output/ggnet_legend}
-		\label{ggnet4}
-		\end{center}
-	\end{figure}
+    \frametitle{Modeling networks over time}
+    \begin{itemize}
+        \item<1-> ERGMS can be thought of as a cross-sectional analysis; with networks, temporal analysis is possible as well
+        \item<1-> Stochastic actor-oriented models (SAOMs) identify and measure the change in a network over time
+        \item<1-> Help measure two processes within the network -- \textit{selection} and \textit{influence}
+        \item<1-> Selection: Are connections chosen based on a shared attribute?
+        \item<1-> Influence: Do connections induce behavior change
+        \item<1-> Teen smoking: are friends chosen because others smoke (selection) or does smoking start because other friends are smoking (influence)
+        \item<1-> Both processes can happen at the same time
+    \end{itemize}
 }
 
-% 7f
+% 8a
 \frame {
-	\frametitle{\texttt{ggnet}: Same network, different ties}
-	\begin{figure}
-	\begin{center}
-		\includegraphics[height=.5\textwidth]{/Users/mhoover/Dropbox/pubs_presents/output/ggnet_basic}
-		\includegraphics[height=.5\textwidth]{/Users/mhoover/Dropbox/pubs_presents/output/ggnet_basic_friend}
-		\label{ggnet5}
-		\end{center}
-	\end{figure}
+    \frametitle{Using visuals for qualitative analysis}
+    \begin{itemize}
+        \item<1-> Utilizing visuals can improve knowledge and understanding of a network
+        \item<1-> Can utilize attributes on the network to help -- size, color, shape of nodes; can even use edge attributes (size, color, transparency)
+        \item<1-> As with any visual, be careful that what's added doesn't ultimately distract from the message
+    \end{itemize}
 }
 
-% 7g
+% 8b
 \frame {
-	\frametitle{\texttt{ggnet}: Same network, different ties, node placement set}
-	\begin{figure}
-	\begin{center}
-		\includegraphics[height=.5\textwidth]{/Users/mhoover/Dropbox/pubs_presents/output/ggnet_play_set}
-		\includegraphics[height=.5\textwidth]{/Users/mhoover/Dropbox/pubs_presents/output/ggnet_friend_set}
-		\label{ggnet6}
-		\end{center}
-	\end{figure}
+    \frametitle{A plain network}
+    \begin{figure}
+    \begin{center}
+        \includegraphics[height=.65\textwidth]{/Users/mhoover/Dropbox/git/presentations/spdc_may2017/network_FINAL}
+        \label{network1}
+        \end{center}
+    \end{figure}
+
 }
 
-% 7h
+% 8b
 \frame {
-	\frametitle{\texttt{ggnet}: Different color palette}
-	\begin{figure}
-	\begin{center}
-		\includegraphics[height=.7\textwidth]{/Users/mhoover/Dropbox/pubs_presents/output/ggnet_palette}
-		\label{ggnet7}
-		\end{center}
-	\end{figure}
+    \frametitle{A network with shape}
+    \begin{figure}
+    \begin{center}
+        \includegraphics[height=.65\textwidth]{/Users/mhoover/Dropbox/git/presentations/spdc_may2017/shape_network_FINAL}
+        \label{network2}
+        \end{center}
+    \end{figure}
+
 }
 
-% 7i
+% 8d
 \frame {
-	\frametitle{\texttt{ggnet}: Color gradient}
-	\begin{figure}
-	\begin{center}
-		\includegraphics[height=.7\textwidth]{/Users/mhoover/Dropbox/pubs_presents/output/ggnet_gradient}
-		\label{ggnet8}
-		\end{center}
-	\end{figure}
+    \frametitle{A network with shape and color}
+    \begin{figure}
+    \begin{center}
+        \includegraphics[height=.65\textwidth]{/Users/mhoover/Dropbox/git/presentations/spdc_may2017/shape_color_network_FINAL}
+        \label{network3}
+        \end{center}
+    \end{figure}
+
 }
 
-% 8
+% 9. Building your own network
+%     * Wealth of ability to build your own networks for analysis
+%     * Most APIs will provide users; ties generated by data type
+%     * Twitter; ties could be..
+%         * Re-tweets
+%         * Likes
+%         * Followers
+%         * Time of tweet
+%         * Topic
+%     * Untappd; ties could be...
+%         * Same beer checked-in
+%         * Location
+%         * Friends
+%         * Badges
+%         * Use of language
+% 9a
 \frame {
-	\frametitle{Comparing and contrasting \texttt{gplot} and \texttt{ggnet}}
-	\begin{itemize}
-		\item<1-> \texttt{gplot} has better flexibility for input; \texttt{ggnet} requires a specific data source
-		\item<1-> \texttt{ggnet} has streamlined parameter entry
-		\item<1-> \texttt{gplot} has a greater variety of attributes for nodes and edges
-		\item<1-> \texttt{ggnet} has easier legend capabilities
-		\item<1-> \texttt{gplot} can handle one- and two-mode networks; \texttt{ggnet} does not have the capability, currently
-		\item<1-> \texttt{ggnet} allows for color gradient on continuous variables
-		\item<1-> Both have extensive outputting capabilities for use outside of \texttt{R}
-	\end{itemize}
+    \frametitle{Building networks}
+    \begin{itemize}
+        \item<1-> It is expensive and time-consuming to collect network data
+        \item<1-> However, building a network doesn't need too difficult; with API access and some code, network construction is certainly possible
+        \item<1-> Most APIs will provide some information on users (nodes) and based on the site, there are probably ways to identify connections (edges)
+        \item<1-> Depending on the edges, this may create a one- or two-mode network
+        \item<1-> Examples of one-mode connections:
+        \begin{itemize}
+            \item<1-> Twitter followers (one-mode)
+            \item<1-> Friends on Instagram (one-mode)
+            \item<1-> Hashtags used in tweets (two-mode)
+            \item<1-> \textit{Beers checked-in on Untappd} (two-mode)
+        \end{itemize}
+        \item<1-> Let's take a look at building a one-mode network by collecting data from an API on a two-mode network and figure out some interesting things along the way
+    \end{itemize}
 }
 
-% 9
+% 9b
 \frame {
-	\frametitle{Summary}
-	\begin{itemize}
-		\item<1-> Do it yourself! I had a need and while the solution isn't perfect, it was fun to put something together and keep working on it
-		\item<1-> Next steps:
-		\begin{itemize}
-			\item<1-> Build out the two-mode features of \texttt{ggnet}
-			\item<1-> Consolidate and create more efficient code
-			\item<1-> Create an \texttt{R} package for submission to CRAN
-		\end{itemize}
-		\item<1-> Which function to use depends on need -- \texttt{gplot} for initial visualizations, \texttt{ggnet} for final visualizations
-	\end{itemize}
+    \frametitle{Creating a network from Untappd}
+    \begin{itemize}
+        \item<1-> \href{https://untappd.com/}{Untappd} is a mobile app that allows people to track the beers that they have or are drinking
+        \item<1-> Its API provides access to user details as well as the beers that users check in (along with other information that we'll ignore for this exercise)
+        \item<1-> So let's say I am interested to know not just \textit{who} my friends are (which I already have due to friend connections), but \textit{which of my friends have similar beer preferences}
+        \item<1-> We could:
+        \begin{itemize}
+            \item<1-> Pull all the beers I have checked-in along will all of my friends
+            \item<1-> For each friend, grab all the beers they've checked-in
+            \item<1-> Create an edgelist of person-to-beer
+            \item<1-> `Flatten' the two-mode network to a one-mode person-to-person (or, beer-to-beer) network, where the edges are the number of beers in common two nodes have checked in
+        \end{itemize}
 }
 
 % 10
@@ -357,7 +553,12 @@
 	\frametitle{Thank you!}
 	\begin{itemize}
 		\item<1-> Thank you for your time!
-		\item<1-> Email: \href{mailto:matthew.a.hoover@gmail.com}{matthew.a.hoover@gmail.com}
+		\item<1-> All materials are on my GitHub page: github.com/mhoover
+        \begin{itemize}
+            \item<1-> \texttt{presentations/spdc\_may2017}
+            \item<1-> \texttt{ggnet}
+            \item<1-> \texttt{untappd}
+        \end{itemize}
 		\item<1-> Questions?
 	\end{itemize}
 }
